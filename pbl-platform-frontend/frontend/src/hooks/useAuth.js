@@ -1,0 +1,24 @@
+import { useEffect, useState, useCallback } from 'react'
+
+export function useAuth(){
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const raw = localStorage.getItem('user')
+    if (raw) setUser(JSON.parse(raw))
+  }, [])
+
+  const login = useCallback((data)=>{
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role, id: data.userId }))
+    setUser({ email: data.email, role: data.role, id: data.userId })
+  }, [])
+
+  const logout = useCallback(()=>{
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setUser(null)
+  }, [])
+
+  return { user, setUser, login, logout }
+}
