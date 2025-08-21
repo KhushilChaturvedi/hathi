@@ -27,7 +27,7 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '1mb' }));
 
 // ✅ if you want Razorpay webhook, mount it here BEFORE json parser (raw body required)
-import { razorpayWebhook } from './controllers/razorpayWebhookController.js';
+import { razorpayWebhook } from './controllers/razorpaywebhookController.js';
 app.post(
   '/api/payments/razorpay/webhook',
   express.raw({ type: 'application/json' }),
