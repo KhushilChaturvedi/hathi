@@ -11,6 +11,7 @@ import MockProjects from './pages/MockProjects.jsx'
 import SubmitMock from './pages/SubmitMock.jsx'
 import Admin from './pages/Admin.jsx'
 import { useAuth } from './hooks/useAuth.js'
+import LandingPage from './pages/LandingPage.jsx'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '')
 
@@ -53,7 +54,7 @@ export default function App(){
       <Nav />
       <div className="container py-6">
         <Routes>
-          <Route path="/" element={<Navigate to="/projects" />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
