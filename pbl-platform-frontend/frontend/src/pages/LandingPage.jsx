@@ -1,8 +1,53 @@
 import { Link } from "react-router-dom";
 
+function Navbar() {
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+        {/* Logo Placeholder */}
+        <div className="flex items-center space-x-2">
+          <img
+            src="/logo-placeholder.png" // replace later with your real logo
+            alt="Hathi Logo"
+            className="h-10 w-10"
+          />
+          <span className="font-poppins font-bold text-xl text-[#1A1A1A]">
+            Hathi
+          </span>
+        </div>
+
+        {/* Navigation */}
+        <div className="hidden md:flex space-x-6 font-medium">
+          <a href="#problem" className="hover:text-[#3B82F6]">Problem</a>
+          <a href="#how" className="hover:text-[#3B82F6]">How It Works</a>
+          <a href="#features" className="hover:text-[#3B82F6]">Features</a>
+        </div>
+
+        {/* CTA */}
+        <div className="flex space-x-4">
+          <a
+            href="/login"
+            className="px-4 py-2 rounded-lg border border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6] hover:text-white"
+          >
+            Log In
+          </a>
+          <a
+            href="/signup-student"
+            className="px-4 py-2 rounded-lg bg-[#3B82F6] text-white hover:bg-blue-700"
+          >
+            Sign Up
+          </a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 export default function LandingPage() {
   return (
     <div className="bg-[#F9FAFB] text-[#1A1A1A] font-inter">
+      <Navbar />
+      
       {/* Hero Section */}
       <section className="relative bg-[#1A1A1A] text-white h-screen flex flex-col justify-center items-center text-center px-6">
         <img
@@ -20,23 +65,23 @@ export default function LandingPage() {
           </p>
           <div className="flex justify-center gap-6">
             <Link to="/signup-student" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
-              I’m a Student
+              I'm a Student
             </Link>
             <Link to="/signup-entrepreneur" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
-              I’m an Entrepreneur
+              I'm an Entrepreneur
             </Link>
           </div>
         </div>
       </section>
 
       {/* Problem Section */}
-      <section className="py-20 px-6 md:px-16 text-center bg-[#F5E6D3]">
+      <section id="problem" className="py-20 px-6 md:px-16 text-center bg-[#F5E6D3]">
         <h2 className="text-3xl font-bold font-poppins mb-8">The Problem We Solve</h2>
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
           <div className="bg-white p-6 rounded-xl shadow">
             <h3 className="text-xl font-semibold mb-3">For Students</h3>
             <p className="text-gray-700">
-              Courses give theory. Without real-world projects, skills don’t stick.  
+              Courses give theory. Without real-world projects, skills don't stick.  
               Hathi provides mock + real projects to bridge the gap.
             </p>
           </div>
@@ -51,7 +96,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-6 bg-[#F9FAFB] text-center">
+      <section id="how" className="py-20 px-6 bg-[#F9FAFB] text-center">
         <h2 className="text-3xl font-bold font-poppins mb-12">How Hathi Works</h2>
         <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
           <div className="p-6 bg-white rounded-xl shadow-md">
@@ -76,7 +121,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="py-20 px-6 text-center bg-white">
+      <section id="features" className="py-20 px-6 text-center bg-white">
         <h2 className="text-3xl font-bold font-poppins mb-8">Why Choose Hathi?</h2>
         <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
           <div className="p-6 bg-[#F9FAFB] rounded-xl shadow">
@@ -100,14 +145,14 @@ export default function LandingPage() {
           Build your future with Hathi 🐘
         </h2>
         <p className="mb-8 text-lg">
-          Join today — whether you’re learning or launching.
+          Join today — whether you're learning or launching.
         </p>
         <div className="flex justify-center gap-6">
           <Link to="/signup-student" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
-            I’m a Student
+            I'm a Student
           </Link>
           <Link to="/signup-entrepreneur" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
-            I’m an Entrepreneur
+            I'm an Entrepreneur
           </Link>
         </div>
       </section>
