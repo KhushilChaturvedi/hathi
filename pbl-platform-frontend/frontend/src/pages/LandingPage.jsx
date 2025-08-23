@@ -25,18 +25,12 @@ function Navbar() {
 
         {/* CTA */}
         <div className="flex space-x-4">
-          <a
-            href="/login"
-            className="px-4 py-2 rounded-lg border border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6] hover:text-white"
-          >
-            Log In
-          </a>
-          <a
-            href="/signup-student"
-            className="px-4 py-2 rounded-lg bg-[#3B82F6] text-white hover:bg-blue-700"
-          >
-            Sign Up
-          </a>
+        <Link to="/login" className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
+            Login
+          </Link>
+          <Link to="/signup" className="px-4 py-2 rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50">
+            Signup
+          </Link>
         </div>
       </div>
     </nav>
@@ -64,10 +58,10 @@ export default function LandingPage() {
             Together, we make learning practical.
           </p>
           <div className="flex justify-center gap-6">
-            <Link to="/signup-student" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
+            <Link to="/signup" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
               I'm a Student
             </Link>
-            <Link to="/signup-entrepreneur" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
+            <Link to="/signup" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
               I'm an Entrepreneur
             </Link>
           </div>
@@ -148,10 +142,10 @@ export default function LandingPage() {
           Join today — whether you're learning or launching.
         </p>
         <div className="flex justify-center gap-6">
-          <Link to="/signup-student" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
+          <Link to="/signup" className="bg-[#3B82F6] hover:bg-blue-700 px-6 py-3 rounded-lg font-medium">
             I'm a Student
           </Link>
-          <Link to="/signup-entrepreneur" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
+          <Link to="/signup" className="bg-[#10B981] hover:bg-green-700 px-6 py-3 rounded-lg font-medium">
             I'm an Entrepreneur
           </Link>
         </div>
