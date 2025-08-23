@@ -1,6 +1,6 @@
 // frontend/components/LoginForm.jsx
 import { useState } from "react";
-import api from "../api";
+import api from "../lib/api";
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
