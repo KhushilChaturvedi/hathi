@@ -7,11 +7,14 @@ import VerifyEmail from './pages/VerifyEmail.jsx'
 import Projects from './pages/Projects.jsx'
 import CreateProject from './pages/CreateProject.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import StudentDashboard from './pages/StudentDashboard.jsx'
+import EntrepreneurDashboard from './pages/EntrepreneurDashboard.jsx'
+import AdminDashboard from './pages/AdminDashboard.jsx'
 import MockProjects from './pages/MockProjects.jsx'
 import SubmitMock from './pages/SubmitMock.jsx'
 import Admin from './pages/Admin.jsx'
 import { useAuth } from './hooks/useAuth.js'
-import LandingPage from './pages/LandingPage.jsx'
+import LandingPage from './pages/landingpage.jsx'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '')
 
@@ -26,6 +29,14 @@ function Nav(){
           {user?.role === 'entrepreneur' && <Link to="/projects/create">Create</Link>}
           {user?.role === 'student' && <Link to="/mock">Mock</Link>}
           {user?.role === 'admin' && <Link to="/admin">Admin</Link>}
+          {user && (
+            <Link 
+              to={`/dashboard/${user.role}`} 
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Dashboard
+            </Link>
+          )}
         </div>
         <div className="flex gap-2 items-center">
           {user ? (<>
@@ -61,6 +72,9 @@ export default function App(){
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/create" element={<Protected roles={['entrepreneur']}><CreateProject /></Protected>} />
           <Route path="/dashboard/:projectId" element={<Protected><Dashboard /></Protected>} />
+          <Route path="/dashboard/student" element={<Protected roles={['student']}><StudentDashboard /></Protected>} />
+          <Route path="/dashboard/entrepreneur" element={<Protected roles={['entrepreneur']}><EntrepreneurDashboard /></Protected>} />
+          <Route path="/dashboard/admin" element={<Protected roles={['admin']}><AdminDashboard /></Protected>} />
           <Route path="/mock" element={<Protected roles={['student']}><MockProjects /></Protected>} />
           <Route path="/mock/submit" element={<Protected roles={['student']}><SubmitMock /></Protected>} />
           <Route path="/admin" element={<Protected roles={['admin']}><Admin /></Protected>} />
