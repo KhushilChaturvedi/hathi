@@ -1,0 +1,13 @@
+{
+  "name": "pbl-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "pbl-platform-frontend/frontend",
+    "pbl-platform-backend/backend"
+  ],
+  "scripts": {
+    "build": "cd pbl-platform-frontend/frontend && npm run build",
+    "dev": "cd pbl-platform-frontend/frontend && npm run dev"
+  }
+}

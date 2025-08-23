@@ -10,14 +10,43 @@ const signToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 
 export const signup = async (req,res) => {
   try {
     const { email, password, role, skills = [], preferences = {} } = req.body;
-    if (!email || !password || !role) return res.status(400).json({ success:false, message:'Missing fields' });
+
+    if (!email || !password || !role) {
+      return res.status(400).json({ success:false, message:'Missing fields' });
+    }
+
+    if (!['student','entrepreneur','admin'].includes(role)) {
+      return res.status(400).json({ success:false, message:'Invalid role' });
+    }
+
     if (!validator.isStrongPassword(password, { minLength:8, minLowercase:1, minUppercase:0, minNumbers:1, minSymbols:1 })) {
       return res.status(400).json({ success:false, message:'Password must be >=8 chars with numbers & special chars' });
     }
+
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ success:false, message:'Email already in use' });
+
     const user = await User.create({ email, password, role, skills, preferences });
     const token = signToken(user._id.toString());
+
+    // email verification link
+    const vtoken = crypto.randomBytes(24).toString('hex');
+    await Token.create({ userId: user._id, token: vtoken, type:'emailVerify', expiresAt: new Date(Date.now()+ 24*60*60*1000) });
+    const verifyUrl = `${process.env.CLIENT_URL}/verify-email?token=${vtoken}`;
+    await sendEmail(user.email, 'Verify your email', `<p>Click to verify: <a href="${verifyUrl}">${verifyUrl}</a></p>`);
+
+    res.status(201).json({ 
+      success:true, 
+      userId: user._id, 
+      role: user.role,
+      token, 
+      message:'Signup success. Check email to verify.' 
+    });
+  } catch(e){
+    res.status(500).json({ success:false, message: e.message });
+  }
+};
+
 
     // email verification
     const vtoken = crypto.randomBytes(24).toString('hex');
@@ -25,25 +54,41 @@ export const signup = async (req,res) => {
     const verifyUrl = `${process.env.CLIENT_URL}/verify-email?token=${vtoken}`;
     await sendEmail(user.email, 'Verify your email', `<p>Click to verify: <a href="${verifyUrl}">${verifyUrl}</a></p>`);
 
-    res.status(201).json({ success:true, userId: user._id, token, message:'Signup success. Check email to verify.' });
-  } catch(e){
-    res.status(500).json({ success:false, message: e.message });
+    res.status(201).json({ 
+      success:true, 
+      userId: user._id, 
+      role: user.role,
+      token, 
+      message: 'Signup success. Check email to verify.' 
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
-};
+}
 
 export const login = async (req,res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ success:false, message:'Invalid credentials' });
+
     const ok = await user.comparePassword(password);
     if (!ok) return res.status(400).json({ success:false, message:'Invalid credentials' });
+
     const token = signToken(user._id.toString());
-    res.json({ success:true, userId: user._id, token, message:'Login success' });
+
+    res.json({ 
+      success:true, 
+      userId: user._id, 
+      role: user.role,   // 👈 return role here
+      token, 
+      message:'Login success' 
+    });
   } catch(e){
     res.status(500).json({ success:false, message: e.message });
   }
 };
+
 
 export const verifyEmail = async (req,res)=>{
   try{
@@ -68,6 +113,16 @@ export const deleteUser = async (req,res)=>{
     await User.findByIdAndDelete(userId);
     res.json({ success:true, message:'User data deleted' });
   }catch(e){
+    res.status(500).json({ success:false, message:e.message });
+  }
+};
+
+export const getMe = async (req,res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ success:false, message:'User not found' });
+    res.json({ success:true, user });
+  } catch(e) {
     res.status(500).json({ success:false, message:e.message });
   }
 };

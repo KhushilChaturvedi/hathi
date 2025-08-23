@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import api from '../lib/api'
+// frontend/components/LoginForm.jsx
+import { useState } from "react";
+import api from "../api";
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
-export default function Login(){
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-  const { login } = useAuth()
-  const nav = useNavigate()
+export default function LoginForm() {
+  const [form, setForm] = useState({ email: "", password: "" });
 
-  const submit = async (e) => {
-    e.preventDefault()
-    try{
-      const res = await api.post('/auth/login', { email, password })
-      login({ token: res.data.token, email, role: res.data.role || 'student', userId: res.data.userId })
-      nav('/projects')
-    }catch(err){
-      setMessage(err.response?.data?.message || err.message)
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post("/users/login", form);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role); // 👈 store role
+      window.location.href = redirectByRole(res.data.role);
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
     }
-  }
+  };
+
+  const redirectByRole = (role) => {
+    switch (role) {
+      case "student": return "/student-dashboard";
+      case "entrepreneur": return "/entrepreneur-dashboard";
+      case "admin": return "/admin-dashboard";
+      default: return "/";
+    }
+  };
 
   return (
-    <div className="card max-w-md mx-auto">
-      <h1 className="text-xl font-semibold mb-4">Welcome back</h1>
-      <form onSubmit={submit} className="space-y-3">
-        <input className="input" type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required />
-        <input className="input" type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required />
-        <button className="btn w-full" type="submit">Login</button>
-      </form>
-      {message && <p className="mt-3 text-sm text-red-700">{message}</p>}
-    </div>
-  )
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={form.email}
+        onChange={handleChange}
+        className="border p-2 w-full"
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={form.password}
+        onChange={handleChange}
+        className="border p-2 w-full"
+      />
+      <button type="submit" className="bg-green-600 text-white px-4 py-2">
+        Login
+      </button>
+    </form>
+  );
 }
