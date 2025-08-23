@@ -7,7 +7,7 @@
     "pbl-platform-backend/backend"
   ],
   "scripts": {
-    "build": "cd pbl-platform-frontend/frontend && npm run build",
+    "build": "cd pbl-platform-frontend/frontend && npx vite build",
     "dev": "cd pbl-platform-frontend/frontend && npm run dev"
   }
 }
