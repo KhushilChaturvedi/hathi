@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd pbl-platform-frontend/frontend && npm install && npm run build",
+  "buildCommand": "npm run build",
   "outputDirectory": "pbl-platform-frontend/frontend/dist",
   "framework": "vite"
 }
