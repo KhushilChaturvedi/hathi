@@ -47,25 +47,6 @@ export const signup = async (req,res) => {
   }
 };
 
-
-    // email verification
-    const vtoken = crypto.randomBytes(24).toString('hex');
-    await Token.create({ userId: user._id, token: vtoken, type:'emailVerify', expiresAt: new Date(Date.now()+ 24*60*60*1000) });
-    const verifyUrl = `${process.env.CLIENT_URL}/verify-email?token=${vtoken}`;
-    await sendEmail(user.email, 'Verify your email', `<p>Click to verify: <a href="${verifyUrl}">${verifyUrl}</a></p>`);
-
-    res.status(201).json({ 
-      success:true, 
-      userId: user._id, 
-      role: user.role,
-      token, 
-      message: 'Signup success. Check email to verify.' 
-    });
-  } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
-  }
-}
-
 export const login = async (req,res) => {
   try {
     const { email, password } = req.body;
@@ -88,7 +69,6 @@ export const login = async (req,res) => {
     res.status(500).json({ success:false, message: e.message });
   }
 };
-
 
 export const verifyEmail = async (req,res)=>{
   try{
