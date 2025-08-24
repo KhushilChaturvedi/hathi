@@ -1,0 +1,10 @@
+[33m8a83b2c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix Vercel build permissions with custom build script and npx
+[33m208a9e6[m Move Vercel config to root directory and fix workspace build
+[33m569e971[m Add Vercel configuration and fix build permissions
+[33m38b1a2d[m Fix import path in Login.jsx to resolve build error
+[33m3558543[m Update LandingPage component with improved navigation and structure
+[33m247f1a1[m Auth flow: include role+email in responses, update useAuth hook, connect login/signup
+[33m9a40129[m added navbar
+[33mca3a21b[m new font added in indexhtml
+[33md739097[m Add branded Hathi landing page with fonts & colors
+[33mb585c22[m Add real startup-style Landing Page

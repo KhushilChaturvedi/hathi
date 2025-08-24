@@ -15,7 +15,7 @@ export const signup = async (req,res) => {
       return res.status(400).json({ success:false, message:'Missing fields' });
     }
 
-    if (!['student','entrepreneur','admin'].includes(role)) {
+    if (!['student','entrepreneur'].includes(role)) {
       return res.status(400).json({ success:false, message:'Invalid role' });
     }
 
@@ -38,6 +38,7 @@ export const signup = async (req,res) => {
     res.status(201).json({ 
       success:true, 
       userId: user._id, 
+      email: user.email,
       role: user.role,
       token, 
       message:'Signup success. Check email to verify.' 
@@ -61,6 +62,7 @@ export const login = async (req,res) => {
     res.json({ 
       success:true, 
       userId: user._id, 
+      email: user.email,
       role: user.role,   // 👈 return role here
       token, 
       message:'Login success' 
@@ -104,5 +106,42 @@ export const getMe = async (req,res) => {
     res.json({ success:true, user });
   } catch(e) {
     res.status(500).json({ success:false, message:e.message });
+  }
+};
+
+// Special admin creation endpoint (protected by secret key)
+export const createAdmin = async (req,res) => {
+  try {
+    const { email, password, secretKey } = req.body;
+    
+    // Check secret key (you can set this in environment variables)
+    if (secretKey !== process.env.ADMIN_SECRET_KEY) {
+      return res.status(403).json({ success:false, message:'Unauthorized' });
+    }
+
+    if (!email || !password) {
+      return res.status(400).json({ success:false, message:'Missing fields' });
+    }
+
+    if (!validator.isStrongPassword(password, { minLength:8, minLowercase:1, minUppercase:0, minNumbers:1, minSymbols:1 })) {
+      return res.status(400).json({ success:false, message:'Password must be >=8 chars with numbers & special chars' });
+    }
+
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ success:false, message:'Email already in use' });
+
+    const user = await User.create({ email, password, role: 'admin' });
+    const token = signToken(user._id.toString());
+
+    res.status(201).json({ 
+      success:true, 
+      userId: user._id, 
+      email: user.email,
+      role: user.role,
+      token, 
+      message:'Admin account created successfully' 
+    });
+  } catch(e){
+    res.status(500).json({ success:false, message: e.message });
   }
 };
